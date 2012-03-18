@@ -7,10 +7,12 @@ files. Do not feed it anything else.
 Setup
 =====
 Prerequisites:
-* [pyshp](http://code.google.com/p/pyshp/) (included)
-* [progress_bar](http://coreygoldberg.blogspot.com/2010/01/python-command-line-progress-bar-with.html) (included)
-* [elementtree](http://effbot.org/zone/xml-writer.htm)
-* [argparse](http://code.google.com/p/argparse/) (included in python 2.7 and later)
+
+ * [pyshp](http://code.google.com/p/pyshp/) (included)
+ * [progress_bar](http://coreygoldberg.blogspot.com/2010/01/python-command-line-progress-bar-with.html) (included)
+ * [elementtree](http://effbot.org/zone/xml-writer.htm)
+ * [argparse](http://code.google.com/p/argparse/) (included in python 2.7 and later)
+
 Install these, chmod 0755 shape2osm.py and you should be good to go. 
 
 Usage
