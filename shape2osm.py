@@ -45,7 +45,6 @@
 
 __version__ = 0.1
 
-import sys
 import shapefile
 import argparse
 from progress_bar import ProgressBar
@@ -57,6 +56,7 @@ API_VERSION = "0.6"
 parser = argparse.ArgumentParser(description='Convert a ESRI Shapefile (POINT only) to .OSM')
 parser.add_argument('INFILE', help='The path to the input ESRI shapefile, will append .shp if omitted')
 parser.add_argument('OUTFILE', type=argparse.FileType('w'), help='The path to the output OSM XML file')
+parser.add_argument('--quiet', action='store_true', default=False)
 args = parser.parse_args()
 
 osm_id = 0
@@ -65,7 +65,8 @@ dt = datetime.now()
 sf = shapefile.Reader(args.INFILE)
 f = sf.fields
 l = len(sf.shapes())
-p = ProgressBar(l)
+if not args.quiet:
+    p = ProgressBar(l) 
 
 w = XMLWriter(args.OUTFILE)
 w.start("osm", {"generator": "shape2osm " + str(__version__), "version": API_VERSION})
@@ -74,9 +75,10 @@ for shape in sf.shapeRecords():
     (x,y) = shape.shape.points[0]
     w.start("node", {"id": str(osm_id), "timestamp": dt.isoformat(), "version": "1", "visible": "true", "lon": str(x), "lat": str(y)})
     for i in range(1,len(f)):
-        w.element("tag", "", {"k": f[i][0], "v": shape.record[i-1]})
+        w.element("tag", "", {"k": str(f[i][0]), "v": str(shape.record[i-1])})
     w.end()
-    p.update_time(l - (l + osm_id))
-    print "{0}\r".format(p),
+    if not args.quiet:
+        p.update_time(l - (l + osm_id))
+        print "{0}\r".format(p),
 w.end()
 print "\nfinished."
