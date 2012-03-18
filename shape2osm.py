@@ -81,4 +81,5 @@ for shape in sf.shapeRecords():
         p.update_time(l - (l + osm_id))
         print "{0}\r".format(p),
 w.end()
-print "\nfinished."
+if not args.quiet:
+    print "\nfinished."
