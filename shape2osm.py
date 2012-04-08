@@ -42,8 +42,12 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
+#
+# Changelog
+# 0.1   initial release
+# 0.2   added upload=false to xml
 
-__version__ = 0.1
+__version__ = 0.2
 
 import shapefile
 import argparse
@@ -55,7 +59,7 @@ API_VERSION = "0.6"
 
 parser = argparse.ArgumentParser(description='Convert a ESRI Shapefile (POINT only) to .OSM')
 parser.add_argument('INFILE', help='The path to the input ESRI shapefile, will append .shp if omitted')
-parser.add_argument('OUTFILE', type=argparse.FileType('w'), help='The path to the output OSM XML file')
+parser.add_argument('OUTFILE', type=argparse.FileType('w'), default='out.osm', help='The path to the output OSM XML file')
 parser.add_argument('--quiet', action='store_true', default=False)
 args = parser.parse_args()
 
@@ -69,7 +73,7 @@ if not args.quiet:
     p = ProgressBar(l) 
 
 w = XMLWriter(args.OUTFILE)
-w.start("osm", {"generator": "shape2osm " + str(__version__), "version": API_VERSION})
+w.start("osm", {"generator": "shape2osm " + str(__version__), "version": API_VERSION, "upload": "false"})
 for shape in sf.shapeRecords():
     osm_id -= 1
     (x,y) = shape.shape.points[0]
